@@ -1,6 +1,7 @@
 ;; Install Elfeed
 (require 'package)
 
+(message "Installing Elfeed...")
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
@@ -13,10 +14,12 @@
   (package-install 'elfeed))
 
 ;; Execute Elfeed
+(message "Initializing Elfeed...")
 (require 'elfeed)
 
 ;; Configure Elfeed
 (setq elfeed-db-directory "elfeed-db")
+(make-directory elfeed-db-directory t)
 (setq elfeed-feeds
       '(
 	"https://laylacodes.hashnode.dev/rss.xml"
@@ -128,6 +131,7 @@
 	))
 
 ;; Update elfeed database
+(message "Updating database...")
 (require 'elfeed-db)
 (elfeed-update)
 
@@ -147,21 +151,22 @@
   (sleep-for 1))
 
 ;; Generate XML
+
+(message "Generating XML...")
 (defun generate-index-xml ()
   (let* ((xml-file "index.xml")
 	 (articles (elfeed-db-get-entries))
-	 (xml-header "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<articles>\n")
-	 (xml-footer "</articles>\n"))
+	 (xml-header "<rss version=\"2.0\">\n<channel>\n")
+	 (xml-footer "</channel>\n"))
     (with-temp-file xml-file
       (insert xml-header)
       (dolist (article articles)
 	(let ((title (elfeed-entry-title article))
               (date (format-time-string "%F" (elfeed-entry-date article)))
               (link (elfeed-entry-link article))
-              (content (elfeed-deref (elfeed-entry-content article))))
-          (insert (format "  <article>\n    <title>%s</title>\n    <date>%s</date>\n    <link>%s</link>\n    <content>%s</content>\n  </article>\n"
+              (content (xml-escape-string (format "%s" (elfeed-deref (elfeed-entry-content article)))) ))
+          (insert (format "  <item>\n    <title>%s</title>\n    <pubDate>%s</pubDate>\n    <link>%s</link>\n    <content:encoded>%s</content:encoded>\n  </item>\n"
                           title date link content))))
-      (insert xml-footer))
-    (message "Output: %s" xml-file)) )
-
+      (insert xml-footer))))
 (generate-index-xml)
+(message "Done! Check 'index.xml'")
