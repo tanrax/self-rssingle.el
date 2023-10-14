@@ -1,5 +1,3 @@
-;; emacs -Q --script ejemplo-rssingle.el
-
 ;; Install Elfeed
 (require 'package)
 
@@ -13,9 +11,6 @@
 
 (unless (package-installed-p 'elfeed)
   (package-install 'elfeed))
-
-(unless (package-installed-p 'yaml)
-  (package-install 'yaml))
 
 ;; Execute Elfeed
 (require 'elfeed)
