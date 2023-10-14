@@ -159,7 +159,7 @@
     (with-temp-file xml-file
       (insert xml-header)
       (dolist (article articles)
-	(let ((title (elfeed-entry-title article))
+	(let ((title (xml-escape-string (elfeed-entry-title article)))
               (date (format-time-string "%F" (elfeed-entry-date article)))
               (link (elfeed-entry-link article))
               (content (xml-escape-string (format "%s" (elfeed-deref (elfeed-entry-content article)))) ))
