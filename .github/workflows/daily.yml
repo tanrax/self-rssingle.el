@@ -19,7 +19,7 @@ jobs:
 
     - name: Install Emacs
       run: sudo apt install --no-install-recommends emacs
-    - name: Run rssingl.el
+    - name: Run rssingle.el
       run: emacs -Q --script rssingle.el
     - name: Upload updates database
       run: |

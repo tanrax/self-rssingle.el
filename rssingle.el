@@ -18,8 +18,6 @@
 ;; Configure Elfeed
 (setq db-directory "elfeed-db")
 (setq elfeed-db-directory db-directory)
-
-;; Add feeds
 (setq elfeed-feeds
       '(
 	"https://laylacodes.hashnode.dev/rss.xml"
@@ -142,7 +140,6 @@
       (push entry entries))
     entries)
   )
-
 
 ;; Generate XML
 (let* ((xml-file "index.xml")
