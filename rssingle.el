@@ -16,7 +16,7 @@
 (require 'elfeed)
 
 ;; Configure Elfeed
-(setq db-directory "~/elfeed-db/")
+(setq db-directory "elfeed-db")
 (setq elfeed-db-directory db-directory)
 
 ;; Add feeds
