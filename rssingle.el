@@ -161,7 +161,7 @@
       (dolist (article articles)
 	(let ((title (xml-escape-string (elfeed-entry-title article)))
               (date (format-time-string "%F" (elfeed-entry-date article)))
-              (link (elfeed-entry-link article))
+              (link (xml-escape-string (elfeed-entry-link article)))
               (content (xml-escape-string (format "%s" (elfeed-deref (elfeed-entry-content article)))) ))
           (insert (format "  <item>\n    <title>%s</title>\n    <pubDate>%s</pubDate>\n    <link>%s</link>\n    <description>%s</description>\n  </item>\n"
                           title date link content))))
