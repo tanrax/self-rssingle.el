@@ -135,14 +135,6 @@
 
 (sleep-for 1)
 
-(defun elfeed-db-get-entries ()
-  "Get all entries from the elfeed database."
-  (let ((entries '()))
-    (with-elfeed-db-visit (entry feed)
-			  (push entry entries))
-    entries)
-  )
-
 ;; Wait for elfeed to finish updating
 (require 'elfeed-curl)
 (while (> elfeed-curl-queue-active 0)
@@ -151,10 +143,18 @@
 ;; Generate XML
 
 (message "Generating XML...")
+
+(defun elfeed-db-get-entries ()
+  "Get all entries from the elfeed database."
+  (let ((entries '()))
+    (with-elfeed-db-visit (entry feed)
+			  (push entry entries))
+    entries))
+
 (defun generate-index-xml ()
   (let* ((xml-file "index.xml")
 	 (articles (elfeed-db-get-entries))
-	 (xml-header "<?xml version="1.0"?>\n<rss version=\"2.0\">\n<channel>\n")
+	 (xml-header "<?xml version=\"1.0\"?>\n<rss version=\"2.0\">\n<channel>\n")
 	 (xml-footer "</channel>\n</rss>\n"))
     (with-temp-file xml-file
       (insert xml-header)
