@@ -21,14 +21,6 @@ jobs:
       run: sudo apt install --no-install-recommends emacs
     - name: Run rssingle.el
       run: emacs -Q --script rssingle.el
-    - name: Upload updates database
-      run: |
-        rm -rf elfeed-db
-        git config user.email "action@github.com"
-        git config user.name "GitHub Action"
-        git add elfeed-db
-        git commit --allow-empty -m "$(date +"%F")_database"
-        git push -f origin main
     - name: Upload new index.xml
       run: |
         rm -rf docs/index.xml

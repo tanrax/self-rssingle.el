@@ -18,8 +18,6 @@
 (require 'elfeed)
 
 ;; Configure Elfeed
-(setq elfeed-db-directory "elfeed-db")
-(make-directory elfeed-db-directory t)
 (setq elfeed-feeds
       '(
 	"https://laylacodes.hashnode.dev/rss.xml"
