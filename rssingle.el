@@ -18,6 +18,7 @@
 (require 'elfeed)
 
 ;; Configure Elfeed
+(setq-default elfeed-search-filter "@1-week-ago +unread")
 (setq elfeed-feeds
       '(
 	"https://laylacodes.hashnode.dev/rss.xml"
