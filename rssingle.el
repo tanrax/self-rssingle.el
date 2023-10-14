@@ -154,8 +154,8 @@
 (defun generate-index-xml ()
   (let* ((xml-file "index.xml")
 	 (articles (elfeed-db-get-entries))
-	 (xml-header "<rss version=\"2.0\">\n<channel>\n")
-	 (xml-footer "</channel>\n"))
+	 (xml-header "<?xml version="1.0"?>\n<rss version=\"2.0\">\n<channel>\n")
+	 (xml-footer "</channel>\n</rss>\n"))
     (with-temp-file xml-file
       (insert xml-header)
       (dolist (article articles)
