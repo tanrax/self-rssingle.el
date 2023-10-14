@@ -28,5 +28,5 @@ jobs:
         git config user.email "action@github.com"
         git config user.name "GitHub Action"
         git add docs/index.xml
-        git commit -m "$(date +"%F")"
+        git commit --allow-empty -m "$(date +"%F")"
         git push -f origin main
