@@ -16,8 +16,7 @@
 (require 'elfeed)
 
 ;; Configure Elfeed
-(setq db-directory "elfeed-db")
-(setq elfeed-db-directory db-directory)
+(setq elfeed-db-directory "elfeed-db")
 (setq elfeed-feeds
       '(
 	"https://laylacodes.hashnode.dev/rss.xml"
@@ -130,30 +129,39 @@
 
 ;; Update elfeed database
 (require 'elfeed-db)
-(unless (elfeed-db-ensure)
-  (elfeed-update))
+(elfeed-update)
+
+(sleep-for 1)
 
 (defun elfeed-db-get-entries ()
   "Get all entries from the elfeed database."
   (let ((entries '()))
     (with-elfeed-db-visit (entry feed)
-      (push entry entries))
+			  (push entry entries))
     entries)
   )
 
+;; Wait for elfeed to finish updating
+(require 'elfeed-curl)
+(while (> elfeed-curl-queue-active 0)
+  (sleep-for 1))
+
 ;; Generate XML
-(let* ((xml-file "index.xml")
-       (articles (elfeed-db-get-entries))
-       (xml-header "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<articles>\n")
-       (xml-footer "</articles>\n"))
-  (with-temp-file xml-file
-    (insert xml-header)
-    (dolist (article articles)
-      (let ((title (elfeed-entry-title article))
-            (date (format-time-string "%F" (elfeed-entry-date article)))
-            (link (elfeed-entry-link article))
-            (content (elfeed-deref (elfeed-entry-content article))))
-        (insert (format "  <article>\n    <title>%s</title>\n    <date>%s</date>\n    <link>%s</link>\n    <content>%s</content>\n  </article>\n"
-                        title date link content))))
-    (insert xml-footer))
-  (message "Output: %s" xml-file))
+(defun generate-index-xml ()
+  (let* ((xml-file "index.xml")
+	 (articles (elfeed-db-get-entries))
+	 (xml-header "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<articles>\n")
+	 (xml-footer "</articles>\n"))
+    (with-temp-file xml-file
+      (insert xml-header)
+      (dolist (article articles)
+	(let ((title (elfeed-entry-title article))
+              (date (format-time-string "%F" (elfeed-entry-date article)))
+              (link (elfeed-entry-link article))
+              (content (elfeed-deref (elfeed-entry-content article))))
+          (insert (format "  <article>\n    <title>%s</title>\n    <date>%s</date>\n    <link>%s</link>\n    <content>%s</content>\n  </article>\n"
+                          title date link content))))
+      (insert xml-footer))
+    (message "Output: %s" xml-file)) )
+
+(generate-index-xml)
