@@ -5,9 +5,9 @@ on:
     branches:
     - main
   schedule:
-    - cron: "5 5 * * *"
-    - cron: "5 13 * * *"
-    - cron: "5 22 * * *"
+    #- cron: "5 5 * * *"
+    #- cron: "5 13 * * *"
+    #- cron: "5 22 * * *"
 
 jobs:
   build:
